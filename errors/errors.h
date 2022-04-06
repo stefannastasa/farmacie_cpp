@@ -1,5 +1,0 @@
-class ErrorClass{
-    private:
-
-    public:
-};
