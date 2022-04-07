@@ -2,7 +2,7 @@
 #include "ui/ui.h"
 
 int main(){
-    run_tests();
+    // run_tests();
 
     console app;
     app.run();

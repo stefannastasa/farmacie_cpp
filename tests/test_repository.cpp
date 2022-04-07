@@ -1,6 +1,6 @@
 #include "test_repository.h"
 #include <assert.h>
-
+#include <vector>
 void test_addElem(){
     generator gen;
     repository test_subject;

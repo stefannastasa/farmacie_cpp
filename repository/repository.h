@@ -1,14 +1,14 @@
 #pragma once
 #include "../entity/entity.h"
-#include <vector>
-#include <algorithm>
-
+/*#include <vector>
+#include <algorithm>*/
+#include "../templates/lista.h"
 
 bool comparator_nume(entity a, entity b);
 
 
-typedef pair<vector<entity>::iterator,vector<entity>::iterator> iter_pair;
-typedef vector<entity>::iterator physical;
+typedef pair<Lista<entity>::iterator,Lista<entity>::iterator> iter_pair;
+typedef Lista<entity>::iterator physical;
 
 
 /*
@@ -17,7 +17,7 @@ typedef vector<entity>::iterator physical;
 class repository{
     private:
 
-        vector<entity> list;
+        Lista<entity> list;
         int nrElems;
 
         //finds an element in the class
@@ -50,5 +50,6 @@ class repository{
         void DESTROY();
 
         void sortElems(int clause);
+
 };
 

@@ -1,16 +1,5 @@
 #include "ui.h"
 
-console::console(){
-    functi.push_back(&console::adauga);
-    functi.push_back(&console::sterge);
-    functi.push_back(&console::modifica);
-    functi.push_back(&console::cautare);
-    functi.push_back(&console::afisare);
-    functi.push_back(&console::filtrare);
-    functi.push_back(&console::sortare);
-    functi.push_back(&console::iesire);
-}
-
 // typedef void(console::*comm)();
 void console::run(){
 
@@ -33,8 +22,33 @@ void console::run(){
         cout<<'\n';
         
         int command = answ[0] - '0';
+
         cout<<"------------------------------\n";
-        (this->*functi[command-1])();
+        switch(command){
+            case 1:
+                adauga();
+                break;
+            case 2:
+                sterge();
+                break;
+            case 3:
+                modifica();
+                break;
+            case 4:
+                cautare();
+                break;
+            case 5:
+                afisare();
+                break;
+            case 6:
+                filtrare();
+                break;
+            case 7:
+                sortare();
+                break;
+            case 8:
+                return;
+        }
         cout<<"------------------------------\n";
 
 
@@ -326,5 +340,5 @@ void console::sortare(){
 }
 
 void console::iesire(){
-    exit(0);
+    return;
 }

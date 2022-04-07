@@ -1,7 +1,26 @@
 #include "repository.h"
 
+void bubble_sort(Lista<entity>& lst, bool(*comparator)(entity a, entity b)){
+    
+    bool changed = true;
+
+    while(changed){
+        changed = false;
+        int size = lst.getNrElems();
+        for(int i = 0;i<size-1;++i){
+            for(int j = i+1;j<size;++j){
+                if(!comparator(*(lst.begin()+i), *(lst.begin()+j))){
+                    swap(*(lst.begin()+i), *(lst.begin()+j));
+                    changed = true;
+                }
+            }
+        }
+
+    }   
+}
+
 physical repository::find(int pos){
-    return list.begin() + pos;
+    return list.begin()+pos;
 }
 
 repository::repository():nrElems{0}{}
@@ -75,14 +94,13 @@ bool comparator_substance(entity a, entity b){
 void repository::sortElems(int clause){
     switch(clause){
         case 0:
-            sort(list.begin(),list.end(), comparator_nume);
+            bubble_sort(list, &comparator_nume);
             break;
         case 1:
-            sort(list.begin(),list.end(), comparator_manufacturer);
+            bubble_sort(list, &comparator_manufacturer);
             break;
-        
         case 2:
-            sort(list.begin(),list.end(), comparator_substance);
+            bubble_sort(list, &comparator_substance);
             break;            
     }
 }

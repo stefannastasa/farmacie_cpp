@@ -2,17 +2,17 @@
 #include "../service/service.h"
 #include "../errors/errors.h"
 #include <iostream>
-
+#include <memory>
+#include <vector>
 using namespace std;
 class console{
-typedef void(console::*comm)();
+// typedef void(console::&comm)();
     private:
         service farmacie;
-        vector<comm> functi;
 
         void afiseazaLista();
     public:
-        console();
+        // console();
 
         void adauga();
 
