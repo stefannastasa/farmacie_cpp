@@ -2,14 +2,14 @@
 #include "../repository/repository.h"
 #include "../validators/validator.h"
 #include "../errors/errors.h"
-
+#include <fstream>
 using namespace std;
 
 
 class service{
     private:
         repository repo; 
-        validator valid;   
+        validator valid;
         repository filter;
     public:
 
@@ -49,7 +49,29 @@ class service{
 };
 
 
+class service_reteta : private service{
 
+    private:
+        service& serv;
+        repository lista;
+    public:
+        
+        service_reteta(service& s):serv(s) {};
+
+        //adauga medicamentul cu numele nume din repo in reteta
+        void adaugaPeReteta(string nume);
+
+        //goleste reteta
+        void golesteReteta();
+
+        //genereaza o reteta cu nrTotal de medicamente
+        void genereazaReteta(int nrTotal);
+
+
+        //exporta reteta intr-un fisier cu numele transmis
+        //ca parametru
+        void exportReteta(string numeFisier);
+};
 
 
 

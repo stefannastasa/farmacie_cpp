@@ -8,6 +8,7 @@ console::console(){
     functi.push_back(&console::afisare);
     functi.push_back(&console::filtrare);
     functi.push_back(&console::sortare);
+    functi.push_back(&console::meniuReteta);
     functi.push_back(&console::iesire);
 }
 
@@ -24,7 +25,8 @@ void console::run(){
         cout<<"5. Afiseaza medicamente. \n";
         cout<<"6. Filtreaza medicamente.\n";
         cout<<"7. Sorteaza medicamente. \n";
-        cout<<"8. Iesi din aplicatie.   \n";
+        cout<<"8. MENIU RETETA. \n";
+        cout<<"9. Iesi din aplicatie.   \n";
         cout<<'\n';
         cout<<"Introdu numarul comenzii: ";
 
@@ -32,7 +34,7 @@ void console::run(){
         cin>>answ;
         cout<<'\n';
         
-        int command = answ[0] - '0';
+        int command = stoi(answ);
         cout<<"------------------------------\n";
         (this->*functi[command-1])();
         cout<<"------------------------------\n";
@@ -40,6 +42,82 @@ void console::run(){
 
     }
 
+}
+
+void console::adaugaInReteta(){
+    cout<<"---------------------\n";
+    afisare();
+    cout<<"---------------------\n";
+
+    cout<<"Introdu numele medicamentului de adaugat: ";
+    string nume;
+    cin>>nume;
+    cout<<'\n';
+
+    reteta.adaugaPeReteta(nume);
+
+}
+
+void console::golesteReteta(){
+    
+    cout<<"---------------------\n";
+    reteta.golesteReteta();
+    cout<<"---------------------\n";
+    
+}
+
+void console::genereazaReteta(){
+    cout<<"---------------------\n";
+    cout<<"Introdu numarul de medicamente de adaugat in reteta:";
+    int nr;
+    cin>>nr;
+    cout<<"\n";
+    reteta.genereazaReteta(nr);
+    cout<<"\n\n";
+    cout<<"AU FOST ADAUGATE "<<nr<<"MEDICAMENTE IN RETETA!\n";
+    cout<<"---------------------\n";
+    
+}
+
+void console::exportReteta(){
+    cout<<"---------------------\n";
+    cout<<"Introdu numele fisierului in care sa se exporte: ";
+    string numeFisier;
+    cin>>numeFisier;
+    cout<<"\n";
+    reteta.exportReteta(numeFisier);
+    cout<<"RETETA EXPORTATA CU SUCCES!\n";
+    cout<<"---------------------\n";
+
+}
+
+void console::meniuReteta(){
+    cout<<"COMENZI PENTRU RETETA:\n";
+    cout<<"1. Adauga medicament in reteta.\n";
+    cout<<"2. Goleste reteta.\n";
+    cout<<"3. Genereaza reteta.\n \n";
+    cout<<"4. Exporta reteta. \n";
+
+    cout<<"Introdu numarul comenzii: ";
+    int com;
+    cin>>com;
+    cout<<'\n';
+
+    switch(com){
+        case 1:
+            adaugaInReteta();
+            break;
+        case 2:
+            golesteReteta();
+            break;
+        
+        case 3:
+            genereazaReteta();
+            break;
+        case 4:
+            exportReteta();
+
+    }
 }
 
 void console::adauga(){
@@ -91,8 +169,6 @@ void console::afiseazaLista(){
     iter_pair lst = farmacie.getAll();
 
     for(int i=1;lst.first!=lst.second;++lst.first, ++i){
-        
-        cout<<"----Medicamentul #"<<i<<"----"<<'\n';
         cout<<lst.first->getAfis();
         cout<<'\n';
     }

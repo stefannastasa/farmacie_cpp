@@ -6,7 +6,7 @@ string generator::genString(){
     char alpha[] = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"; // NOLINT
     string gen = "";
     for(int i=0;i<SIZE;++i){
-        gen += alpha[(int)(rand() % 52)]; // NOLINT
+        gen += alpha[(int)(rand() % 51)]; // NOLINT
     }
 
     return gen;

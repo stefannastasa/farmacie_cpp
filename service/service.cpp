@@ -23,6 +23,11 @@ void service::deleteElem(int pos){
 
 void service::changeElem(int pos, string name, string price, string manufacturer, string substance){
     entity modif("", 0, "", "");
+
+    if(pos > repo.getNrElems())
+        throw RangeError("Index out of range");
+
+
     entity actual = repo.getElem(pos);
 
     try{
@@ -61,11 +66,8 @@ void service::changeElem(int pos, string name, string price, string manufacturer
         }
     }
 
-    if(pos > repo.getNrElems())
-        throw RangeError("Index out of range");
-    else{
+
         repo.changeElement(pos, modif);
-    }
 
 }
 
@@ -78,14 +80,21 @@ int service::getNrElems(){
     return repo.getNrElems();
 }
 
-
 entity service::searchElem(string name, string manufacturer){
     iter_pair meds = repo.getAll();
-    for(;meds.first!=meds.second;++meds.first){
-        if(name == meds.first->getName() && manufacturer == meds.first->getManufacturer()){
-            return *(meds.first);
-        }
-    }
+
+    physical result = find_if(meds.first, meds.second, [name, manufacturer](entity c){
+        if(manufacturer=="-1")
+            return name == c.getName();
+        else if(name == "-1")
+            return manufacturer == c.getManufacturer();
+        else
+            return name == c.getName() && manufacturer == c.getManufacturer();
+    } );
+
+    if(result != meds.second)
+        return *result;
+    
     throw RangeError("No element found");
 }
 
@@ -104,13 +113,12 @@ iter_pair service::filterElems_afterPrice(string price){
     iter_pair res = repo.getAll();
     physical start = res.first;
     physical end = res.second;
+    
+    vector<entity> output;
+    copy_if(start, end, back_inserter(output), [p](entity a){ return a.getPrice() == p;} );
 
-
-    for(;start!=end;++start){
-        if(start->getPrice() == p){
-            filter.addElem(*(start));
-        }
-    }
+    for(auto i : output)
+        filter.addElem(i);
 
     return filter.getAll();
 }
@@ -119,7 +127,7 @@ iter_pair service::filterElems_afterPrice(string price){
 iter_pair service::filterElems_afterSubstance(string substance){
     
     try{
-        valid.validatePrice(substance);
+        valid.validateSubstance(substance);
         filter.DESTROY();
     }catch(ValidationError& e){
         throw e;
@@ -129,12 +137,12 @@ iter_pair service::filterElems_afterSubstance(string substance){
     physical start = res.first;
     physical end = res.second;
 
-    
-    for(;start!=end;++start){
-        if(start->getSubstance() == substance){
-            filter.addElem(*(start));
-        }
-    }
+    vector<entity> output;
+    copy_if(start, end, back_inserter(output), [substance](entity a){ return a.getSubstance() == substance; });
+
+    for(auto i : output)
+        filter.addElem(i);
+
 
     return filter.getAll();
 }
@@ -142,7 +150,7 @@ iter_pair service::filterElems_afterSubstance(string substance){
 iter_pair service::filterElems_afterName(string name){
     
     try{
-        valid.validatePrice(name);
+        valid.validateName(name);
         filter.DESTROY();
     }catch(ValidationError& e){
         throw e;
@@ -151,13 +159,13 @@ iter_pair service::filterElems_afterName(string name){
     iter_pair res = repo.getAll();
     physical start = res.first;
     physical end = res.second;
-
     
-    for(;start!=end;++start){
-        if(start->getSubstance() == name){
-            filter.addElem(*(start));
-        }
-    }
+    vector<entity> output;
+    copy_if(start, end, std::back_inserter(output), [name](entity a){ return a.getName() == name; });
+
+    for(auto i:output)
+        filter.addElem(i);
+
     return filter.getAll();
 }
 
@@ -197,4 +205,46 @@ void service::sortElems(int clause){
 
 entity service::getElem(int pos){
     return repo.getElem(pos);
+}
+
+
+
+
+void service_reteta::adaugaPeReteta(string name){
+    entity med = serv.searchElem(name, "-1");
+
+    lista.addElem(med);
+}
+
+void service_reteta::golesteReteta(){
+    lista.DESTROY();
+}
+
+void service_reteta::genereazaReteta(int nrTotal){
+
+    iter_pair pos = serv.getAll();
+
+
+    for(int i=0; i<nrTotal;++i){
+        
+        int pos = rand() % serv.getNrElems();
+        entity med = serv.getElem(pos);
+
+        lista.addElem(med);
+    }
+}
+
+
+void service_reteta::exportReteta(string numeFisier){
+    std::ofstream O_FILE;
+
+
+    O_FILE.open(numeFisier);
+    iter_pair elements = lista.getAll();
+
+    for_each(elements.first, elements.second, [&O_FILE](entity a){
+        O_FILE<<a.getCSVFormat();
+    });
+
+    O_FILE.close();
 }

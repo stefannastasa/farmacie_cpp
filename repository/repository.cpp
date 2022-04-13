@@ -7,6 +7,7 @@ physical repository::find(int pos){
 repository::repository():nrElems{0}{}
 
 void repository::addElem(entity to_add){
+    to_add.setCode(nrElems*1000 + rand() % 100);
     list.push_back(to_add);
     ++nrElems;
 }

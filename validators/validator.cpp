@@ -6,7 +6,7 @@ void validator::validateName(string name){
         throw ValidationError("invalid");
     if(name.empty())
         throw ValidationError("Niciun nume primit");
-    if(name.find("0123456789") != string::npos)
+    if(name.find_first_of("0123456789") != string::npos)
         throw ValidationError("Numele nu poate contine valori numerice");
     
 }
@@ -16,7 +16,7 @@ void validator::validateManufacturer(string manufacturer){
         throw ValidationError("invalid");
     if(manufacturer.empty())
         throw ValidationError("Niciun producator primit");
-    if(manufacturer.find("0123456789") != string::npos)
+    if(manufacturer.find_first_of("0123456789") != string::npos)
         throw ValidationError("Producatorul nu poate contine valori numerice");
     
 }
@@ -33,7 +33,7 @@ void validator::validatePrice(string price){
     if(price.empty())
         throw ValidationError("Niciun pret primit");
     
-    if(price.find("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBN") != string::npos)
+    if(price.find_first_of("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBN") != string::npos)
         throw ValidationError("Pretul nu poate contine litere");
 
 }

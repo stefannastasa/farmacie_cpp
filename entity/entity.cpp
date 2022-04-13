@@ -55,6 +55,9 @@ entity& entity::operator=(const entity& a){
 
 const string entity::getAfis() const{
     string afis;
+    afis += "-----> Medicamentul #";
+    afis += to_string(code);
+    afis += '\n';
     afis += "Numele medicamentului este: ";
     afis += name;
     afis += '\n';
@@ -69,4 +72,26 @@ const string entity::getAfis() const{
     afis += '\n';
     
     return afis;
+}
+
+const string entity::getCSVFormat() const{
+    string CSV;
+    CSV += name;
+    CSV += ",";
+    CSV += to_string(price);
+    CSV += ",";
+    CSV += manufacturer;
+    CSV += ",";
+    CSV += substance;
+    CSV += "\n";
+
+    return CSV; 
+}
+
+int entity::getCode() const{
+    return code;
+}
+
+void entity::setCode(const int attr){
+    code = attr;
 }

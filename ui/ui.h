@@ -8,6 +8,7 @@ class console{
 typedef void(console::*comm)();
     private:
         service farmacie;
+        service_reteta reteta = service_reteta(farmacie);
         vector<comm> functi;
 
         void afiseazaLista();
@@ -31,4 +32,14 @@ typedef void(console::*comm)();
         void sortare();
 
         void run();
+
+        void meniuReteta();
+
+        void adaugaInReteta();
+
+        void golesteReteta();
+
+        void genereazaReteta();
+
+        void exportReteta();
 };

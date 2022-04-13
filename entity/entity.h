@@ -9,6 +9,7 @@ using namespace std;
 */
 class entity{
     private:
+        unsigned int code = -1;
         string name;
         float price;
         string manufacturer;
@@ -31,6 +32,11 @@ class entity{
         //return med's active substance
         string getSubstance () const;
 
+        //returns the code of the medicine
+        int getCode() const;
+
+        //sets a new code for the medicine
+        void setCode(const int attr);
         //sets a new name for the medicine
         void setName (const string attr);      
 
@@ -48,6 +54,8 @@ class entity{
         entity& operator=(const entity& a);
 
         const string getAfis() const;
+
+        const string getCSVFormat() const;
 };
 
 

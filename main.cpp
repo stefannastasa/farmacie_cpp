@@ -2,7 +2,12 @@
 #include "ui/ui.h"
 
 int main(){
-    run_tests();
+    cout<<"Run tests? (y/n): ";
+    string ans;
+    cin>>ans;
+    cout<<'\n';
+    if(ans == "y")
+        run_tests();
 
     console app;
     app.run();
