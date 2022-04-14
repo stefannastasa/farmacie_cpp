@@ -11,5 +11,6 @@ int main(){
 
     console app;
     app.run();
+    _CrtDump
     return 0;
 }

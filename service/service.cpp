@@ -9,12 +9,16 @@ void service::addElem(string name, string price, string manufacturer, string sub
     }
     entity to_add(name, stof(price), manufacturer, substance);
 
+    rapoarte.addItem(manufacturer);
     repo.addElem(to_add);
 }
 
 void service::deleteElem(int pos){
-    if(pos < repo.getNrElems())
+    if(pos < repo.getNrElems() && pos>=0){
+        std::string manufacturer = repo.getElem(pos).getManufacturer();
         repo.removeElem(pos);
+        rapoarte.removeItem(manufacturer);
+    }
     else{
         throw RangeError("Index out of range");
     }
@@ -222,9 +226,6 @@ void service_reteta::golesteReteta(){
 
 void service_reteta::genereazaReteta(int nrTotal){
 
-    iter_pair pos = serv.getAll();
-
-
     for(int i=0; i<nrTotal;++i){
         
         int pos = rand() % serv.getNrElems();
@@ -247,4 +248,8 @@ void service_reteta::exportReteta(string numeFisier){
     });
 
     O_FILE.close();
+}
+
+pair<unordered_map<string, int>::iterator,unordered_map<string, int>::iterator> service::getReports(){
+    return rapoarte.getAll();
 }

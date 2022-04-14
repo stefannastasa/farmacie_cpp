@@ -45,6 +45,7 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "span": "cpp",
-        "span_ext": "cpp"
+        "span_ext": "cpp",
+        "unordered_set": "cpp"
     }
 }

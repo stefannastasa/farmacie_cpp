@@ -8,6 +8,7 @@ console::console(){
     functi.push_back(&console::afisare);
     functi.push_back(&console::filtrare);
     functi.push_back(&console::sortare);
+    functi.push_back(&console::afiseazaRapoarte);
     functi.push_back(&console::meniuReteta);
     functi.push_back(&console::iesire);
 }
@@ -25,8 +26,9 @@ void console::run(){
         cout<<"5. Afiseaza medicamente. \n";
         cout<<"6. Filtreaza medicamente.\n";
         cout<<"7. Sorteaza medicamente. \n";
-        cout<<"8. MENIU RETETA. \n";
-        cout<<"9. Iesi din aplicatie.   \n";
+        cout<<"8. Afiseaza rapoartele producatorilor. \n";
+        cout<<"9. MENIU RETETA. \n";
+        cout<<"10. Iesi din aplicatie.   \n";
         cout<<'\n';
         cout<<"Introdu numarul comenzii: ";
 
@@ -402,5 +404,15 @@ void console::sortare(){
 }
 
 void console::iesire(){
+    
     exit(0);
+}
+
+void console::afiseazaRapoarte(){
+    pair<unordered_map<string, int>::iterator,unordered_map<string, int>::iterator> to_iter = farmacie.getReports();
+
+    for(;to_iter.first!= to_iter.second; ++to_iter.first){
+        std::cout<<"Producatorul "<< to_iter.first->first<<" are "<<to_iter.first->second<<
+        (to_iter.first->second ==1 ? " medicament" : " medicamente")<<'\n';
+    }
 }

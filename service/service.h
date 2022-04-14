@@ -3,6 +3,7 @@
 #include "../validators/validator.h"
 #include "../errors/errors.h"
 #include <fstream>
+#include <unordered_map>
 using namespace std;
 
 
@@ -11,6 +12,7 @@ class service{
         repository repo; 
         validator valid;
         repository filter;
+        repository_report rapoarte;
     public:
 
     // adds an element with the properties
@@ -46,10 +48,11 @@ class service{
 
     entity getElem(int pos);
 
+    pair<unordered_map<string, int>::iterator,unordered_map<string, int>::iterator> getReports();
 };
 
 
-class service_reteta : private service{
+class service_reteta{
 
     private:
         service& serv;
@@ -72,6 +75,9 @@ class service_reteta : private service{
         //ca parametru
         void exportReteta(string numeFisier);
 };
+
+
+
 
 
 

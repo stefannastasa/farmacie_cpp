@@ -2,7 +2,7 @@
 #include "../entity/entity.h"
 #include <vector>
 #include <algorithm>
-
+#include <unordered_map>
 
 bool comparator_nume(entity a, entity b);
 
@@ -19,7 +19,7 @@ class repository{
 
         vector<entity> list;
         int nrElems;
-
+        
         //finds an element in the class
         //returns an iterator to the element
         physical find(int pos);
@@ -52,3 +52,17 @@ class repository{
         void sortElems(int clause);
 };
 
+class repository_report{
+    private:
+        unordered_map<string, int> reports;
+    public:
+
+        void addItem(string manufacturer);
+
+        int getItem(string manufacturer) const;
+
+        void removeItem(string manufacturer);
+
+        pair<unordered_map<string, int>::iterator, unordered_map<string, int>::iterator>
+        getAll();
+};

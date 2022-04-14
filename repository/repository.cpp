@@ -7,7 +7,7 @@ physical repository::find(int pos){
 repository::repository():nrElems{0}{}
 
 void repository::addElem(entity to_add){
-    to_add.setCode(nrElems*1000 + rand() % 100);
+    to_add.setCode(nrElems*1000 + (rand() % 100) );
     list.push_back(to_add);
     ++nrElems;
 }
@@ -86,4 +86,46 @@ void repository::sortElems(int clause){
             sort(list.begin(),list.end(), comparator_substance);
             break;            
     }
+}
+
+
+void repository_report::addItem(string manufacturer){
+
+    auto search = reports.find(manufacturer); 
+
+    if(search == reports.end() ){
+        reports.insert(pair<string, int>(manufacturer, 1));
+    }else{
+        reports[manufacturer]++;
+    }
+
+}
+
+int repository_report::getItem(string manufacturer) const{
+    
+    auto search = reports.find(manufacturer);
+
+    if( search == reports.end())
+        return -1;
+    else
+        return search->second;
+
+}
+
+void repository_report::removeItem(string manufacturer){
+    auto search = reports.find(manufacturer);
+
+    if(search == reports.end())
+        throw range_error("Elementul nu exista in rapoarte.");
+    else{
+        --reports[manufacturer];
+
+        if(reports[manufacturer] == 0)
+            reports.erase(manufacturer);
+    }
+}
+
+pair<unordered_map<string, int>::iterator,unordered_map<string, int>::iterator>
+repository_report::getAll(){
+    return pair<unordered_map<string, int>::iterator,unordered_map<string, int>::iterator>(reports.begin(), reports.end());
 }

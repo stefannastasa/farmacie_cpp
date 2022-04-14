@@ -42,4 +42,6 @@ typedef void(console::*comm)();
         void genereazaReteta();
 
         void exportReteta();
+
+        void afiseazaRapoarte();
 };
