@@ -87,20 +87,20 @@ void test_addElemS() {
 void test_deleteElemS() {
     service test_subject;
     generator gen;
-
+    vector<unsigned int> codes;
     for (int i = 0; i < 100; ++i) {
-        test_subject.addElem(gen.genString(), "1000", gen.genString(), gen.genString());
-
+        unsigned int code = test_subject.addElem(gen.genString(), "1000", gen.genString(), gen.genString());
+        codes.push_back(code);
     }
     for (int i = 0; i < 50; ++i) {
-        test_subject.deleteElem(i);
+        test_subject.deleteElem(codes[i]);
     }
 
     try {
         test_subject.deleteElem(51);
     }
     catch (const RangeError& e) {
-        assert(e.getMessage() == "Index out of range");
+        assert(e.getMessage() == "Invalid code.");
     }
 
     assert(test_subject.getNrElems() == 50);
@@ -109,41 +109,42 @@ void test_deleteElemS() {
 void test_changeElemS() {
     service test_subject;
     generator gen;
-
+    vector<unsigned int>codes;
     for (int i = 0; i < 100; ++i) {
-        test_subject.addElem(gen.genString(), "100", gen.genString(), gen.genString());
+        int code = test_subject.addElem(gen.genString(), "100", gen.genString(), gen.genString());
+        codes.push_back(code);
     }
     for (int i = 0; i < 100; ++i) {
         entity aux(gen.genString(), 1000, gen.genString(), gen.genString());
-        test_subject.changeElem(i, aux.getName(), "1000", aux.getManufacturer(), gen.genString());
-        assert(test_subject.getElem(i) == aux);
+        test_subject.changeElem(codes[i], aux.getName(), "1000", aux.getManufacturer(), gen.genString());
+        assert(test_subject.getElem(codes[i]) == aux);
     }
     try {
         test_subject.changeElem(101, gen.genString(), "1000", gen.genString(), gen.genString());
     }
     catch (const RangeError& e) {
-        assert(e.getMessage() == "Index out of range");
+        assert(e.getMessage() == "Invalid code.");
     }
     try {
-        test_subject.changeElem(2, "-1", "-1", "-1", "-1");
+        test_subject.changeElem(codes[2], "-1", "-1", "-1", "-1");
     }
     catch (const ValidationError& e) {
         assert(e.getMessage() == "invalid");
     }
     try {
-        test_subject.changeElem(2, gen.genString(), "-1", "-1", "-1");
+        test_subject.changeElem(codes[2], gen.genString(), "-1", "-1", "-1");
     }
     catch (const ValidationError& e) {
         assert(e.getMessage() == "invalid");
     }
     try {
-        test_subject.changeElem(2, gen.genString(), "100", "-1", "-1");
+        test_subject.changeElem(codes[2], gen.genString(), "100", "-1", "-1");
     }
     catch (const ValidationError& e) {
         assert(e.getMessage() == "invalid");
     }
     try {
-        test_subject.changeElem(2, gen.genString(), "100", gen.genString(), "-1");
+        test_subject.changeElem(codes[2], gen.genString(), "100", gen.genString(), "-1");
     }
     catch (const ValidationError& e) {
         assert(e.getMessage() == "invalid");

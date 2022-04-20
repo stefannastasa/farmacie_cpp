@@ -9,11 +9,11 @@ using namespace std;
 */
 class entity{
     private:
-        unsigned int code = -1;
         string name;
         float price;
         string manufacturer;
         string substance;
+        unsigned int code;
     public:
         //Constructor de medicament
         entity(string d, float p, string prod, string subst);
@@ -33,10 +33,10 @@ class entity{
         string getSubstance () const;
 
         //returns the code of the medicine
-        int getCode() const;
+        unsigned int getCode() const;
 
         //sets a new code for the medicine
-        void setCode(const int attr);
+        void setCode(unsigned int attr);
         //sets a new name for the medicine
         void setName (const string attr);      
 

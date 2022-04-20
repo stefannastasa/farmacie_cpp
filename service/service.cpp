@@ -1,7 +1,7 @@
 #include "service.h"
 
 
-void service::addElem(string name, string price, string manufacturer, string substance){
+unsigned int service::addElem(string name, string price, string manufacturer, string substance){
     try{
         valid.validateAll(name, price, manufacturer, substance);
     }catch(ValidationError& e){
@@ -10,29 +10,33 @@ void service::addElem(string name, string price, string manufacturer, string sub
     entity to_add(name, stof(price), manufacturer, substance);
 
     rapoarte.addItem(manufacturer);
-    repo.addElem(to_add);
+    unsigned int code = repo.addElem(to_add);
+    undoList.push_back(new undoAdd(repo, code));
+    return code;
 }
 
-void service::deleteElem(int pos){
-    if(pos < repo.getNrElems() && pos>=0){
-        std::string manufacturer = repo.getElem(pos).getManufacturer();
-        repo.removeElem(pos);
-        rapoarte.removeItem(manufacturer);
+void service::deleteElem(int code){
+    if(repo.test_code(code)){
+        entity toDel = repo.getElem(code);
+        repo.removeElem(code);
+        undoList.push_back(new undoRemove(repo, toDel));
+
+        rapoarte.removeItem(toDel.getManufacturer());
     }
     else{
-        throw RangeError("Index out of range");
+        throw RangeError("Invalid code.");
     }
 
 }
 
-void service::changeElem(int pos, string name, string price, string manufacturer, string substance){
+void service::changeElem(int code, string name, string price, string manufacturer, string substance){
     entity modif("", 0, "", "");
 
-    if(pos > repo.getNrElems())
-        throw RangeError("Index out of range");
+    if(!repo.test_code(code))
+        throw RangeError("Invalid code.");
 
 
-    entity actual = repo.getElem(pos);
+    entity actual = repo.getElem(code);
 
     try{
         valid.validateName(name);
@@ -44,7 +48,7 @@ void service::changeElem(int pos, string name, string price, string manufacturer
     }
 
     try{
-        valid.validateName(price);
+        valid.validatePrice(price);
         modif.setPrice(stof(price));
     }catch(ValidationError& e){
         if(e.getMessage() == "invalid"){
@@ -53,7 +57,7 @@ void service::changeElem(int pos, string name, string price, string manufacturer
     }
 
     try{
-        valid.validateName(manufacturer);
+        valid.validateManufacturer(manufacturer);
         modif.setManufacturer(manufacturer);
     }catch(ValidationError& e){
         if(e.getMessage() == "invalid"){
@@ -62,7 +66,7 @@ void service::changeElem(int pos, string name, string price, string manufacturer
     }
 
     try{
-        valid.validateName(substance);
+        valid.validateSubstance(substance);
         modif.setSubstance(substance);
     }catch(ValidationError& e){
         if(e.getMessage() == "invalid"){
@@ -70,8 +74,8 @@ void service::changeElem(int pos, string name, string price, string manufacturer
         }
     }
 
-
-        repo.changeElement(pos, modif);
+        undoList.push_back(new undoChange(repo, actual));
+        repo.changeElement(code, modif);
 
 }
 
@@ -82,6 +86,17 @@ iter_pair service::getAll(){
 
 int service::getNrElems(){
     return repo.getNrElems();
+}
+
+void service::UNDO(){
+    if(undoList.size() == 0)
+        throw RangeError("No more undo's to perform.");
+    else{
+        undoAction* operation = undoList.back();
+        operation->doUndo();
+        delete operation;
+        undoList.pop_back();
+    }
 }
 
 entity service::searchElem(string name, string manufacturer){

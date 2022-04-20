@@ -44,4 +44,6 @@ typedef void(console::*comm)();
         void exportReteta();
 
         void afiseazaRapoarte();
+
+        void undoOperatie();
 };

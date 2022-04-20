@@ -9,6 +9,7 @@ console::console(){
     functi.push_back(&console::filtrare);
     functi.push_back(&console::sortare);
     functi.push_back(&console::afiseazaRapoarte);
+    functi.push_back(&console::undoOperatie);
     functi.push_back(&console::meniuReteta);
     functi.push_back(&console::iesire);
 }
@@ -27,8 +28,9 @@ void console::run(){
         cout<<"6. Filtreaza medicamente.\n";
         cout<<"7. Sorteaza medicamente. \n";
         cout<<"8. Afiseaza rapoartele producatorilor. \n";
-        cout<<"9. MENIU RETETA. \n";
-        cout<<"10. Iesi din aplicatie.   \n";
+        cout<<"9. Undo ultima operatie. \n";
+        cout<<"10. MENIU RETETA. \n";
+        cout<<"11. Iesi din aplicatie.   \n";
         cout<<'\n';
         cout<<"Introdu numarul comenzii: ";
 
@@ -259,7 +261,6 @@ void console::modifica(){
             cin>>answer;
             if(answer[0] == 'y')
                 ok = true;
-            cout<<'\n';
         }
     }
 }
@@ -289,7 +290,7 @@ void console::cautare(){
             cout<<elem.getAfis();
             cout<<'\n';
         }catch(ValidationError& e){
-            cout<<e.getMessage()<<'\n'<<"Incerci din nou?(y/n)";
+            cout<<e.getMessage()<<'\n'<<"Incerci di#include <../undo/undo.h>n nou?(y/n)";
 
             string answer;
             cin>>answer;
@@ -406,6 +407,15 @@ void console::sortare(){
 void console::iesire(){
     
     exit(0);
+}
+
+void console::undoOperatie(){
+    try{
+        farmacie.UNDO();
+        cout<<"Undo realizat cu succes!\n";
+    }catch(RangeError& e){
+        cout<<e.getMessage()<<'\n';
+    }
 }
 
 void console::afiseazaRapoarte(){

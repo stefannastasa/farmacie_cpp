@@ -16,29 +16,30 @@ typedef vector<entity>::iterator physical;
 */
 class repository{
     private:
-
         vector<entity> list;
         int nrElems;
         
         //finds an element in the class
         //returns an iterator to the element
-        physical find(int pos);
+        physical find(unsigned int code) ;
     public:
 
         // constructor
         repository();
 
+        //sees if provided code is valid
+        bool test_code(int code) ;
         //returns a copy of the element at location pos
-        entity getElem(int pos);
+        entity getElem(int code);
         // adds an element to the class
-        void addElem(entity to_add);
+        int addElem(entity to_add);
 
         // removes an element of the class
-        void removeElem(int pos);
+        void removeElem(int code);
         
         // changes the element at 'pos' with the
         // updated entity
-        void changeElement(int pos, entity updated);
+        void changeElement(int code, entity updated);
 
 
         // returns the number of elements in the class

@@ -1,26 +1,33 @@
 #include "repository.h"
 
-physical repository::find(int pos){
-    return list.begin() + pos;
+physical repository::find(unsigned int code) {
+    return find_if(list.begin(),list.end(),[code](entity a){return a.getCode() == code;});
 }
 
 repository::repository():nrElems{0}{}
 
-void repository::addElem(entity to_add){
-    to_add.setCode(nrElems*1000 + (rand() % 100) );
+int repository::addElem(entity to_add){
+    to_add.setCode( (nrElems + 1) * 1000 + (rand() % 1000) );
     list.push_back(to_add);
     ++nrElems;
+    
+    return to_add.getCode();
 }
 
-void repository::removeElem(int pos){
+bool repository::test_code(int code) {
+    return find(code) != list.end();
+}
 
-    physical location = find(pos);
+void repository::removeElem(int code){
+
+    physical location = find(code);
     list.erase(location);
     --nrElems;
 }
 
-void repository::changeElement(int pos, entity updated){
-    physical location = find(pos);
+
+void repository::changeElement(int code, entity updated){
+    physical location = find(code);
     
     if(updated.getName() != "")
         location->setName(updated.getName());
@@ -44,8 +51,8 @@ int repository::getNrElems(){
     return nrElems;
 }
 
-entity repository::getElem(int pos){
-    return *(find(pos));
+entity repository::getElem(int code){
+    return *(find(code));
 }
 void repository::DESTROY(){
     list.clear();

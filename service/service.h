@@ -2,6 +2,7 @@
 #include "../repository/repository.h"
 #include "../validators/validator.h"
 #include "../errors/errors.h"
+#include "../undo/undo.h"
 #include <fstream>
 #include <unordered_map>
 using namespace std;
@@ -9,6 +10,7 @@ using namespace std;
 
 class service{
     private:
+        vector<undoAction*> undoList;
         repository repo; 
         validator valid;
         repository filter;
@@ -17,7 +19,7 @@ class service{
 
     // adds an element with the properties
     //  to the repository
-    void addElem(string name, string price, string manufacturer, string substance);
+    unsigned int addElem(string name, string price, string manufacturer, string substance);
     
     //deletes the element situated at 'pos'
     void deleteElem(int pos);
@@ -45,6 +47,8 @@ class service{
 
 
     void sortElems(int clause);
+
+    void UNDO();
 
     entity getElem(int pos);
 

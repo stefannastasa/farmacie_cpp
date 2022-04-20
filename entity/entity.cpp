@@ -3,11 +3,15 @@
 using namespace std;
 
 entity::entity(string d, float p, string prod, string subst):
-name{d},price{p},manufacturer{prod},substance{subst}{};
+name{d},price{p},manufacturer{prod},substance{subst}{
+    code = 0;
+};
 
 entity::entity(const entity& copy):
     name{copy.getName()},price{copy.getPrice()},
-    manufacturer{copy.getManufacturer()},substance{copy.getSubstance()}{}
+    manufacturer{copy.getManufacturer()},
+    substance{copy.getSubstance()},
+    code{copy.getCode()}{}
 
 
 string entity::getName () const{
@@ -88,10 +92,10 @@ const string entity::getCSVFormat() const{
     return CSV; 
 }
 
-int entity::getCode() const{
+unsigned int entity::getCode() const{
     return code;
 }
 
-void entity::setCode(const int attr){
+void entity::setCode(unsigned int attr){
     code = attr;
 }
